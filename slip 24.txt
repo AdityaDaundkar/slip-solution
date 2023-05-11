@@ -1,0 +1,95 @@
+Slip 24 - A) Create a Node.js Application that raise and bind an event by returning Event Emitter object from a function.
+
+
+const EventEmitter = require('events');
+
+function createEmitter() {
+  const emitter = new EventEmitter();
+
+  emitter.on('myEvent', () => {
+    console.log('My event was triggered!');
+  });
+
+  return emitter;
+}
+
+const myEmitter = createEmitter();
+
+myEmitter.emit('myEvent');
+
+
+
+
+
+
+
+
+Slip 24 - A) Create a Node.js Application that raise and bind an event by returning Event Emitter object from a function.
+
+const mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/historical_places', { useNewUrlParser: true, useUnifiedTopology: true });
+
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+db.once('open', () => {
+  console.log('Connected to MongoDB database');
+});
+
+const placeSchema = new mongoose.Schema({
+  name: String,
+  location: String,
+  description: String,
+  photos: [String],
+  // add any additional fields as needed
+});
+
+const Place = mongoose.model('Place', placeSchema);
+
+
+
+app.js
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+
+app.set('view engine', 'ejs');
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+app.get('/places', (req, res) => {
+  Place.find({}, (err, places) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('places', { places: places });
+    }
+  });
+});
+
+// add more routes as needed
+
+
+
+index.js
+
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Historical Places</title>
+</head>
+<body>
+  <h1>Historical Places</h1>
+  <ul>
+    <% places.forEach(place => { %>
+      <li><%= place.name %></li>
+    <% }) %>
+  </ul>
+</body>
+</html>

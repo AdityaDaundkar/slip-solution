@@ -1,0 +1,78 @@
+Slip 9 - A) Create a Node,js file that writes an HTML form, with an upload field.
+Solution:
+upload.js
+
+var http = require('http');
+
+http.createServer(function (req, res) {
+
+  res.writeHead(200, {'Content-Type': 'text/html'});
+
+  res.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
+
+  res.write('<input type="file" name="filetoupload"><br>');
+
+  res.write('<input type="submit">');
+
+  res.write('</form>');
+
+  return res.end();
+
+}).listen(8080);
+
+ 
+
+
+
+
+Slip 9 - B) Using Node.js create a Recipe Book.
+
+server.js
+
+const express = require('express');
+const app = express();
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+app.get('/', (req, res) => {
+  const recipes = [
+    {
+      title: 'Spaghetti Carbonara',
+      ingredients: ['spaghetti', 'bacon', 'eggs', 'parmesan cheese'],
+      instructions: 'Cook spaghetti according to package directions. Fry bacon until crispy. Beat eggs and parmesan cheese together. Drain spaghetti and add to the bacon. Add the egg mixture and stir until creamy. Serve hot.'
+    },
+    {
+      title: 'Chicken Alfredo',
+      ingredients: ['fettuccine', 'chicken', 'heavy cream', 'parmesan cheese'],
+      instructions: 'Cook fettuccine according to package directions. Grill or sauté chicken until cooked through. In a saucepan, heat heavy cream and parmesan cheese until melted and creamy. Serve fettuccine with chicken and sauce on top.'
+    }
+  ];
+  res.render('index', { recipes });
+});
+
+
+
+
+index.html
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Recipe Book</title>
+  </head>
+  <body>
+    <h1>Recipe Book</h1>
+    <ul>
+      <% recipes.forEach(recipe => { %>
+        <li>
+          <h2><%= recipe.title %></h2>
+          <ul>
+            <% recipe.ingredients.forEach(ingredient => { %>
+              <li><%= ingredient %></li>
+            <% }); %>
+          </ul>
+          <p><%= recipe.instructions %></p>
+        </li>
+      <% }); %>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+Slip 25 - A) Create a Node.js Application that wait until the promise returns the result using wait function.
+
+
+
+
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function myFunction() {
+  console.log("Starting myFunction...");
+  await wait(2000); // wait for 2 seconds
+  console.log("2 seconds have passed!");
+}
+
+myFunction();
+
+
+
+
+Slip 25 - B) Using Node,js create an application that shows the events of the day.
+
+
+
+const express = require('express');
+const request = require('request');
+const moment = require('moment');
+const app = express();
+
+app.get('/', (req, res) => {
+  res.send('Welcome to the events of the day!');
+});
+
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+
+const API_KEY = 'your_eventful_api_key';
+const CITY = 'New York'; // change to the city of your choice
+const DATE = moment().format('YYYYMMDD');
+
+app.get('/events', (req, res) => {
+  const url = `http://api.eventful.com/json/events/search?app_key=${API_KEY}&location=${CITY}&date=${DATE}`;
+
+  request(url, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      const events = JSON.parse(body).events.event;
+      res.json(events);
+    } else {
+      res.send('Error fetching events');
+    }
+  });
+});
+
+
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+

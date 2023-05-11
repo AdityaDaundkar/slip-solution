@@ -1,0 +1,91 @@
+Slip 1 - A) Create a Node.js file that will convert the output "Hello World!"into upper-case letters.
+ Solution:
+var http = require('http');
+
+var uc = require('upper-case');
+
+http.createServer(function (req, res) {
+
+  res.writeHead(200, {'Content-Type': 'text/html'});
+
+  res.write(uc.upperCase("Hello World!"));
+
+  res.end();
+
+
+}).listen(8080);
+
+
+
+
+
+
+
+
+
+Slip 1 - B) Create a Node.js file that demonstrate create database student DB and student table (Rno, Sname, Percentage ) in MySQL.
+ Solution:
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+
+  host: "localhost",
+
+  user: "root",
+
+  password: "root"
+
+});
+
+con.connect(function(err) {
+
+  if (err) throw err;
+
+  console.log("Connected!");
+
+  con.query("CREATE DATABASE studentdb", function (err, result) {
+
+    if (err) throw err;
+
+    console.log("Database created");
+
+  });
+
+});
+
+create_table.js
+
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+
+  host: "localhost",
+
+  user: "root",
+
+  password: "root",
+
+  database: "studentdb"
+
+});
+
+con.connect(function(err) {
+
+  if (err) throw err;
+
+  console.log("Connected!");
+
+
+
+  var sql = "CREATE TABLE student(rollno int,name VARCHAR(255), percentage double)";
+
+  con.query(sql, function (err, result) {
+
+    if (err) throw err;
+
+    console.log("Table created");
+
+  });
+
+
+});

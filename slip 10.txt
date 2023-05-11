@@ -1,0 +1,109 @@
+Slip 10 - A) Create a Node.js Application to download jpg image from the Server.
+Solution:
+download_jpg.js
+var fs = require('fs'),
+
+    request = require('request');
+
+var download = function(uri, filename, callback){
+
+  request.head(uri, function(err, res, body){
+
+    console.log('content-type:', res.headers['content-type']);
+
+    console.log('content-length:', res.headers['content-length']);
+
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+
+  });
+
+};
+
+download('https://www.google.com/images/srpr/logo3w.png', 'google.png', function(){
+
+  console.log('done');
+
+});
+
+
+
+
+
+Slip 10 - B) Create a Node.js Application that display create Dept-Emp with 1:M relationship and display the min, max, avg salary of Employee for department name.
+
+
+CREATE DATABASE dept_emp;
+
+USE dept_emp;
+
+CREATE TABLE department (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE employee (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  salary INT NOT NULL,
+  dept_id INT NOT NULL,
+  FOREIGN KEY (dept_id) REFERENCES department(id)
+);
+
+
+server.js
+
+const mysql = require('mysql');
+const express = require('express');
+const app = express();
+
+// Create a MySQL connection pool
+const pool = mysql.createPool({
+  connectionLimit: 10,
+  host: 'localhost',
+  user: 'root',
+  password: '',
+  database: 'dept_emp'
+});
+
+// Create a route to create departments
+app.post('/departments', (req, res) => {
+  const { name } = req.body;
+  pool.query('INSERT INTO department (name) VALUES (?)', [name], (err, results) => {
+    if (err) {
+      res.status(500).send(err.message);
+    } else {
+      res.send('Department created successfully!');
+    }
+  });
+});
+
+// Create a route to create employees
+app.post('/employees', (req, res) => {
+  const { name, salary, dept_id } = req.body;
+  pool.query('INSERT INTO employee (name, salary, dept_id) VALUES (?, ?, ?)', [name, salary, dept_id], (err, results) => {
+    if (err) {
+      res.status(500).send(err.message);
+    } else {
+      res.send('Employee created successfully!');
+    }
+  });
+});
+
+// Create a route to get the min, max, and average salary of employees for a given department
+app.get('/departments/:name/salary', (req, res) => {
+  const { name } = req.params;
+  pool.query('SELECT MIN(salary) AS min_salary, MAX(salary) AS max_salary, AVG(salary) AS avg_salary FROM employee INNER JOIN department ON employee.dept_id = department.id WHERE department.name = ?', [name], (err, results) => {
+    if (err) {
+      res.status(500).send(err.message);
+    } else {
+      res.send(results[0]);
+    }
+  });
+});
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+

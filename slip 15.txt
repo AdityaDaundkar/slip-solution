@@ -1,0 +1,85 @@
+Slip 15 - A) Create a Node.js Application to count occurrence of given word in a file and display the count on console.
+Solution:
+ var fs = require('fs')
+
+
+function countOccurences(string, word) {
+
+    return string.split(word).length - 1;
+
+}
+
+var text = fs.readFileSync('demo.txt', 'utf8');
+
+var count = countOccurences(text, "and"); 
+
+if(count==0){
+
+    console.log("not found")
+
+}else{
+
+console.log(count);
+
+}
+
+
+
+
+
+
+
+
+
+Slip 15 - B) Using Node.js create a eLearning System.
+
+
+const express = require('express');
+const app = express();
+
+// Set up the server
+const PORT = process.env.PORT || 3000;
+
+// Set up a basic course list
+const courses = [
+  {
+    id: 1,
+    title: "Introduction to Node.js",
+    description: "Learn the basics of Node.js programming",
+    instructor: "John Smith"
+  },
+  {
+    id: 2,
+    title: "Advanced React",
+    description: "Learn advanced React concepts",
+    instructor: "Jane Doe"
+  },
+  {
+    id: 3,
+    title: "Database Design",
+    description: "Learn how to design and manage databases",
+    instructor: "Bob Johnson"
+  }
+];
+
+// Define routes
+app.get('/', (req, res) => {
+  res.send('Welcome to the eLearning System!');
+});
+
+// Get a list of all available courses
+app.get('/courses', (req, res) => {
+  res.json(courses);
+});
+
+// Get details of a specific course
+app.get('/courses/:id', (req, res) => {
+  const course = courses.find(c => c.id === parseInt(req.params.id));
+  if (!course) {
+    res.status(404).send('The course with the given ID was not found.');
+  }
+  res.json(course);
+});
+
+// Start the server
+app.listen(PORT, () => console.log(`Listening on port ${PORT}...`));

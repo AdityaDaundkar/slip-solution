@@ -1,0 +1,118 @@
+Slip 3 - A) Create a Node.js Application that uses user defined module circlejs which exports the functions area () and circumference () and display the details on console.
+ Solution:
+circle.js
+
+var circle={  
+
+  area: function(r)
+
+{
+
+    var pi=3.14,a;  
+
+     a=pi*r*r;
+
+  
+
+  console.log('area of circle is:'+a);
+
+},
+
+circumference: function(r)
+
+{
+
+    var pi=3.14,c;
+
+  c=2*pi*r;
+
+  console.log('circumference of circle is:'+c);
+
+}
+
+};
+
+ module.exports=circle
+
+
+
+mycircle.js
+
+var mymod=require('C:/Users/Public/node_prog/circle.js');
+
+mymod.area(5);
+
+mymod.circumference(5);
+
+
+
+
+
+Slip 3 - B) Create a Node. Js Application for validating student registration form.
+
+app.js
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+const port = 3000;
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html');
+});
+
+app.post('/register', (req, res) => {
+  const { name, email, phone, address, course } = req.body;
+
+  if (!name || !email || !phone || !address || !course) {
+    res.send('Please fill out all fields');
+  } else if (!/^\d{10}$/.test(phone)) {
+    res.send('Please enter a valid phone number');
+  } else {
+    res.send('Registration successful');
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server listening on port ${port}`);
+});
+
+
+index.js
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Student Registration Form</title>
+  </head>
+  <body>
+    <h1>Student Registration Form</h1>
+    <form action="/register" method="post">
+      <label>Name:</label>
+      <input type="text" name="name"><br>
+
+      <label>Email:</label>
+      <input type="email" name="email"><br>
+
+      <label>Phone:</label>
+      <input type="tel" name="phone"><br>
+
+      <label>Address:</label>
+      <textarea name="address"></textarea><br>
+
+      <label>Course:</label>
+      <select name="course">
+        <option value="">--Select Course--</option>
+        <option value="JavaScript">JavaScript</option>
+        <option value="Python">Python</option>
+        <option value="Java">Java</option>
+        <option value="PHP">PHP</option>
+      </select><br>
+
+      <input type="submit" value="Register">
+    </form>
+  </body>
+</html>

@@ -1,0 +1,60 @@
+Slip 20 - A) Write Nodes application containing an event handler to open and read the contents of a file.
+
+const fs = require('fs');
+
+// Define the file path
+const filePath = '/path/to/file.txt';
+
+// Define the event handler function
+const readFileHandler = (err, data) => {
+  if (err) {
+    console.error(err);
+    return;
+  }
+  console.log(data);
+};
+
+// Open and read the contents of the file
+fs.readFile(filePath, 'utf-8', readFileHandler);
+
+
+
+Slip 20 - B) Using Node,js create an application that shows SY BBA(CA) course structure.
+
+const express = require('express');
+const app = express();
+
+// Define a route that displays the course structure
+app.get('/', (req, res) => {
+  const courseStructure = {
+    year: 'SY',
+    program: 'BBA(CA)',
+    courses: [
+      {
+        name: 'Introduction to Operating Systems',
+        credits: 3,
+        prereqs: ['Introduction to Computer Science'],
+        description: 'This course covers the fundamentals of operating systems, including processes, threads, memory management, and file systems.'
+      },
+      {
+        name: 'Data Structures and Algorithms',
+        credits: 4,
+        prereqs: ['Introduction to Computer Science', 'Programming Fundamentals'],
+        description: 'This course covers the design and analysis of algorithms, as well as common data structures such as linked lists, stacks, queues, and trees.'
+      },
+      {
+        name: 'Database Management Systems',
+        credits: 3,
+        prereqs: ['Introduction to Computer Science'],
+        description: 'This course covers the basics of database design and management, including data modeling, SQL, and transaction management.'
+      },
+      // Add more courses as needed
+    ]
+  };
+  res.json(courseStructure);
+});
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});

@@ -1,0 +1,92 @@
+Slip 5 - A) Create a Node.js Application that performs following operations on Buffer data.
+ Solution:
+buffer_op.js
+
+var buffer1 = new Buffer('TutorialsPoint ');
+
+var buffer2 = new Buffer('Simply Easy Learning');
+
+var buffer3 = Buffer.concat([buffer1,buffer2]);
+
+console.log("buffer3 content: " + buffer3.toString());
+
+var result = buffer1.compare(buffer2);
+
+if(result < 0) {
+
+   console.log(buffer1 +" comes before " + buffer2);
+
+} else if(result === 0) {
+
+   console.log(buffer1 +" is same as " + buffer2);
+
+} else {
+
+   console.log(buffer1 +" comes after " + buffer2);
+
+}
+
+buffer1.copy(buffer2);
+
+console.log("buffer2 content: " + buffer2.toString());
+
+
+
+
+
+Slip 5 - B) Create a Node,js file that Select all records from the "customers" table, and delete the specified record.
+ Solution:
+
+insert_record.js
+ var mysql = require('mysql');
+
+var con = mysql.createConnection({
+
+  host: "localhost",
+
+  user: "root",
+
+  password: "root",
+
+  database: "studentdb"
+
+});
+
+
+con.connect(function(err) {
+
+  if (err) throw err;
+
+  console.log("Connected!");
+
+  var sql = "INSERT INTO student (rollno,name, percentage) VALUES ?";  
+
+var values = [  
+
+[1,'abc', 77.6],  
+
+[2,'def', 89.6],  
+
+[3,'ghi', 91.6]  
+
+];  
+
+con.query(sql, [values], function (err, result) 
+
+ {
+
+    if (err) throw err;
+
+    console.log("Number of records inserted: " + result.affectedRows);  
+
+  });
+
+con.query("SELECT * FROM student", function (err, result, fields) {
+
+    if (err) throw err;
+
+    console.log(result);
+
+  });
+
+});

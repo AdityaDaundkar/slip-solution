@@ -1,0 +1,99 @@
+Slip 22 - A) Create a Node.js Application to count number of lines in a file and display the count on console.
+ Solution:
+linecount.js
+const readline = require('readline');
+
+const fs = require('fs');
+ 
+var file = 'C:/Users/Public/node_prog/searchf.txt';
+
+var linesCount = 0;
+
+var rl = readline.createInterface({
+
+    input: fs.createReadStream(file),
+
+    output: process.stdout,
+
+    terminal: false
+
+});
+
+rl.on('line', function (line) {
+
+    linesCount++; // on each linebreak, add +1 to 'linesCount'
+
+});
+
+rl.on('close', function () {
+
+    console.log(linesCount); // print the result when the 'close' event is called
+
+});
+
+
+
+
+Slip 22 - B) Using Node.js create an application to perform the following operations on customer account(minimum balance should be maintained 1000 and use customer table) 1. Withdraw the amount 2. Balance enquiry
+
+ let's create a customers table in our MySQL database:
+
+CREATE TABLE customers (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255),
+  balance INT
+);
+
+withdraw=
+
+const express = require('express');
+const mysql = require('mysql');
+const app = express();
+const port = 3000;
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
+  database: 'mydatabase'
+});
+
+app.use(express.json());
+
+app.post('/withdraw', (req, res) => {
+  const customerId = req.body.customerId;
+  const amount = req.body.amount;
+
+  connection.query('SELECT * FROM customers WHERE id = ?', [customerId], (error, results) => {
+    if (error) {
+      res.status(500).send('Internal server error');
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).send('Customer not found');
+      return;
+    }
+
+    const customer = results[0];
+    const newBalance = customer.balance - amount;
+
+    if (newBalance < 1000) {
+      res.status(400).send('Insufficient balance');
+      return;
+    }
+
+    connection.query('UPDATE customers SET balance = ? WHERE id = ?', [newBalance, customerId], (error, results) => {
+      if (error) {
+        res.status(500).send('Internal server error');
+        return;
+      }
+
+      res.send('Withdrawal successful');
+    });
+  });
+});
+
+app.listen(port, () => {
+  console.log(`App listening at http://localhost:${port}`);
+});

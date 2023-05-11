@@ -1,0 +1,115 @@
+Slip 17 - A) Write Node.js application that transfer a file as an attachment on web and enables browser to prompt the user to download file using express js.
+
+const express = require('express');
+const app = express();
+const path = require('path');
+
+// serve static files from the public folder
+app.use(express.static(path.join(__dirname, 'public')));
+
+// serve index.html as the homepage
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// handle file download request
+app.get('/download', (req, res) => {
+  const fileName = 'example.txt';
+  const filePath = path.join(__dirname, 'public', 'files', fileName);
+
+  // set headers to force download as attachment
+  res.setHeader('Content-Disposition', 'attachment; filename=' + fileName);
+  res.setHeader('Content-Type', 'application/octet-stream');
+
+  // send the file as the response
+  res.sendFile(filePath);
+});
+
+// start the server
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+
+
+
+
+
+Slip 17 - B) Using Node,js display the Employee details order by salary in Table format.
+Solution:
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+
+host: "localhost",
+
+user: "root",
+
+password: "",
+
+database: "slipno17B"
+
+});
+
+con.connect(function(err) {
+
+if (err) throw err;
+
+console.log("Connected!");
+
+con.query("CREATE DATABASE IF NOT EXISTS slipno17B", function (err, result) {
+
+if (err) throw err;
+
+console.log("Database created");
+
+});
+
+var sql = "CREATE TABLE IF NOT EXISTS Employee (name VARCHAR(255), sal 
+
+INT(20))";
+
+con.query(sql, function (err, result) {
+
+if (err) throw err;
+
+console.log("Table created");
+
+});
+
+var sql = "INSERT INTO Employee (name, sal) VALUES ?";
+
+var data = [
+
+['ABC', '9400'],
+
+['XYZ', '4500'],
+
+['PQR', '2300']
+
+];
+
+con.query(sql, [data] ,function (err, result) {
+
+if (err) throw err;
+
+console.log("record inserted");
+
+});
+
+con.query("SELECT * FROM Employee ORDER BY sal ASC", function (err, result,
+
+});
+
+con.query("SELECT * FROM Employee ORDER BY sal ASC", function (err, result, fields) {
+
+if (err) throw err;
+
+console.log(result);
+
+});
+
+});
+
+
+

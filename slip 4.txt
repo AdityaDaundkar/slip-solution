@@ -1,0 +1,109 @@
+Slip 4 - A) Create a Node.js Application that accepts first name, last name and date of birth of a Person and define a Module that concatenate firstName and lastName andalso calculate the age of the Person.
+Solution:
+ var http = require('http');
+
+var rl = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+rl.question('Enter The First Name : ', (name) => {
+    rl.question('Enter The last Name :  ', (lname) => {
+
+        rl.question('Enter The Date of Birth :  ', (inputdate) => {
+        var fn = name;
+        var ln = lname;
+        var dob = new Date(inputdate);
+        var today = new Date();
+
+        var diff = new Date(today.getTime() - dob.getTime());
+
+
+        console.log(`first Name is : ${fn}`);
+        console.log(`Last Name is : ${ln}`);
+        console.log("Age: " + Number(diff.getUTCFullYear() - 1970));
+
+        rl.close();
+        http.createServer(function (req, res) {
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.write("First Name is : " + fn);
+            res.write("Last Name is : " + ln);
+            res.end();
+        }).listen(3000);
+    });
+});
+
+});
+
+
+
+Slip 4 - B) Using Node,js create a S Y BBA(CA)Teachers Profile System.
+
+// app.js
+
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+// Configure middleware
+app.use(bodyParser.json());
+
+// Connect to MongoDB database
+mongoose.connect('mongodb://localhost/sybbateachers', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+.then(() => console.log('Connected to MongoDB'))
+.catch(err => console.error('Failed to connect to MongoDB', err));
+
+// Define Teachers model and schema
+const teacherSchema = new mongoose.Schema({
+  name: String,
+  email: String,
+  subject: String,
+  education: String
+});
+
+const Teacher = mongoose.model('Teacher', teacherSchema);
+
+// Define routes for CRUD operations on Teachers
+app.get('/teachers', async (req, res) => {
+  const teachers = await Teacher.find();
+  res.send(teachers);
+});
+
+app.post('/teachers', async (req, res) => {
+  const { name, email, subject, education } = req.body;
+  const teacher = new Teacher({
+    name,
+    email,
+    subject,
+    education
+  });
+  await teacher.save();
+  res.send(teacher);
+});
+
+app.put('/teachers/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, email, subject, education } = req.body;
+  const teacher = await Teacher.findByIdAndUpdate(id, {
+    name,
+    email,
+    subject,
+    education
+  }, { new: true });
+  res.send(teacher);
+});
+
+app.delete('/teachers/:id', async (req, res) => {
+  const { id } = req.params;
+  await Teacher.findByIdAndDelete(id);
+  res.send('Teacher deleted successfully');
+});
+
+// Start the server
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on port ${port}...`));

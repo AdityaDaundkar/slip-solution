@@ -1,0 +1,82 @@
+Slip 14 - A) Create a Node.js Application to search a particular word in a file and display result on console.
+ Solution:
+search_word.js
+var fs=require('fs');
+
+fs.readFile('C:/Users/Public/node_prog/searchf.txt', function (err, data) {
+
+  if (err) throw err;
+
+  if(data.includes('dfgdf')){
+
+   console.log(data.toString())
+
+  }
+
+else
+
+{
+
+  console.log('word not found');
+
+}
+
+});
+
+
+
+
+
+
+Slip 14 - B) Using Node,js create an Electricity bill calculation System.
+
+
+const inquirer = require('inquirer');
+
+// Define the tariff rates
+const rates = {
+  residential: {
+    rate1: 0.3,
+    rate2: 0.6,
+    threshold: 300,
+  },
+  commercial: {
+    rate1: 0.5,
+    rate2: 0.75,
+    threshold: 500,
+  },
+};
+
+// Define the function to calculate the bill
+function calculateBill(rate, consumption) {
+  if (consumption <= rate.threshold) {
+    return consumption * rate.rate1;
+  } else {
+    const excess = consumption - rate.threshold;
+    return rate.threshold * rate.rate1 + excess * rate.rate2;
+  }
+}
+
+// Prompt the user for input
+inquirer
+  .prompt([
+    {
+      type: 'list',
+      name: 'tariff',
+      message: 'Which tariff do you want to use?',
+      choices: ['residential', 'commercial'],
+    },
+    {
+      type: 'number',
+      name: 'consumption',
+      message: 'How many kWh did you consume?',
+    },
+  ])
+  .then((answers) => {
+    // Calculate the bill
+    const rate = rates[answers.tariff];
+    const bill = calculateBill(rate, answers.consumption);
+
+    // Print the result
+    console.log(`Your ${answers.tariff} electricity bill is $${bill.toFixed(2)}.`);
+  });

@@ -1,0 +1,101 @@
+Slip 26 - A) Create a Node.js Application that raise and bind a event using extending the Event Emitter class.
+
+
+const EventEmitter = require('events');
+
+// Define a class that extends the EventEmitter class
+class MyEmitter extends EventEmitter {}
+
+// Create an instance of the MyEmitter class
+const myEmitter = new MyEmitter();
+
+// Bind an event listener to the 'myEvent' event
+myEmitter.on('myEvent', (data) => {
+  console.log(`Received data: ${data}`);
+});
+
+// Raise the 'myEvent' event and pass some data
+myEmitter.emit('myEvent', 'Hello, world!');
+
+
+
+
+Slip 26 - B) Using Node.js create a department store portal.
+
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const { v4: uuidv4 } = require('uuid');
+
+const app = express();
+
+// Set up middleware to parse incoming request bodies
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+// Define an array of products
+const products = [
+  {
+    id: uuidv4(),
+    name: 'T-Shirt',
+    price: 20,
+    description: 'A comfortable and stylish T-shirt.',
+    category: 'Clothing',
+  },
+  {
+    id: uuidv4(),
+    name: 'Jeans',
+    price: 40,
+    description: 'A durable and fashionable pair of jeans.',
+    category: 'Clothing',
+  },
+  {
+    id: uuidv4(),
+    name: 'Sneakers',
+    price: 60,
+    description: 'A pair of sneakers that provide great support.',
+    category: 'Footwear',
+  },
+];
+
+// Define a route for getting all products
+app.get('/products', (req, res) => {
+  return res.status(200).json(products);
+});
+
+// Define a route for getting a single product by ID
+app.get('/products/:id', (req, res) => {
+  const productId = req.params.id;
+  const product = products.find((p) => p.id === productId);
+  if (!product) {
+    return res.status(404).json({ error: 'Product not found.' });
+  }
+  return res.status(200).json(product);
+});
+
+// Define a route for creating a new product
+app.post('/products', (req, res) => {
+  const { name, price, description, category } = req.body;
+
+  // Validate the product fields
+  if (!name || !price || !description || !category) {
+    return res.status(400).json({ error: 'All fields are required.' });
+  }
+
+  // Create a new product object and add it to the array
+  const newProduct = {
+    id: uuidv4(),
+    name,
+    price,
+    description,
+    category,
+  };
+  products.push(newProduct);
+
+  return res.status(201).json(newProduct);
+});
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});

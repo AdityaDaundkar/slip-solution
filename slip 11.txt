@@ -1,0 +1,124 @@
+Slip 11 - A) Create a Simple Web Server using Node.js that shows the college information.
+Solution:
+
+
+ var http = require('http');
+
+var fs = require('fs');
+
+http.createServer(function (req, res) {
+
+fs.readFile('slip11.html', function(err, data) {
+
+res.writeHead(200, {'Content-Type': 'text/html'});
+
+res.write(data);
+
+return res.end();
+
+});
+
+}).listen(8080);
+
+Code for slip11.html
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>form</title>
+
+<style>
+
+h1{text-align:center;
+
+font-size:70px;
+
+color:red;
+
+}
+
+p{
+
+color:blue;
+
+text-align:center;
+
+font-size:20px;
+
+text-decoration:underline}
+
+h2{
+
+text-align:center;
+
+}
+
+</style>
+
+<body bgcolor=pink>
+
+<h1>BJS  College</h1>
+
+<center><img src=c.gif height=350 width=350></center>
+
+<p>Pune University<h2>
+
+BJS ASC COLLEGE<br>
+
+Wagholi, DIST-PUNE 412207.<br>
+
+Affiliated to Savitribai Phule Pune University, Accredited by NAAC 'A' Grade</p>
+
+</h2>
+
+<a href=demoa.html>Click Here For Registration</a>
+</h2>
+</body>
+</html>
+
+
+
+
+Slip 11 - B) Using Node.js create a Computer Science department portal.
+
+
+app.js
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const app = express();
+
+// Configure body-parser middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost/cs-portal', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('MongoDB connected...'))
+  .catch(err => console.log(err));
+
+// Set up routes
+app.get('/', (req, res) => {
+  res.render('index');
+});
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}...`));
+
+
+index.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>CS Portal</title>
+  </head>
+  <body>
+    <h1>Welcome to the CS Portal</h1>
+    <p>This is the home page for the CS department.</p>
+  </body>
+</html>

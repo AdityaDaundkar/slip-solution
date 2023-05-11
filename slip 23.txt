@@ -1,0 +1,84 @@
+Slip 23 - A) Create a Node.js Application to search a particular word in a file and replace all occurrences of that word with another word and bold all.
+
+const fs = require('fs');
+
+const filePath = 'path/to/your/file.txt'; // Replace with the path to your file
+const originalWord = 'hello'; // Replace with the original word you want to replace
+const newWord = 'world'; // Replace with the new word you want to replace it with
+
+fs.readFile(filePath, 'utf8', (err, data) => {
+  if (err) throw err;
+  
+  // Replace all occurrences of the original word with the new word and bold it
+  const newData = data.replace(new RegExp(originalWord, 'gi'), `<strong>${newWord}</strong>`);
+  
+  // Write the updated data back to the file
+  fs.writeFile(filePath, newData, 'utf8', (err) => {
+    if (err) throw err;
+    console.log(`All occurrences of ${originalWord} have been replaced with ${newWord} and bolded in ${filePath}`);
+  });
+});
+
+
+
+
+
+Slip 23 - B) Using Node js create an application that generates the “eTickect”of railway.
+
+
+const fs = require('fs');
+const path = require('path');
+
+// Define the data for the eTicket
+const eTicketData = {
+  trainName: "Express Train",
+  from: "New York",
+  to: "Washington D.C.",
+  date: "2023-05-15",
+  departureTime: "08:30 AM",
+  arrivalTime: "12:30 PM",
+  passengerName: "John Doe",
+  seatNumber: "A7",
+  fare: "$50.00",
+};
+
+// Define the function that generates the eTicket
+const generateETicket = (data) => {
+  const eTicketTemplatePath = path.join(__dirname, 'eTicketTemplate.html');
+  const eTicketTemplate = fs.readFileSync(eTicketTemplatePath, 'utf8');
+  let eTicket = eTicketTemplate;
+
+  Object.keys(data).forEach((key) => {
+    eTicket = eTicket.replace(`{{${key}}}`, data[key]);
+  });
+
+  return eTicket;
+};
+
+// Generate the eTicket
+const eTicket = generateETicket(eTicketData);
+console.log(eTicket);
+
+
+
+index.html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>eTicket</title>
+  </head>
+  <body>
+    <h1>{{trainName}} eTicket</h1>
+    <p>From: {{from}}</p>
+    <p>To: {{to}}</p>
+    <p>Date: {{date}}</p>
+    <p>Departure Time: {{departureTime}}</p>
+    <p>Arrival Time: {{arrivalTime}}</p>
+    <p>Passenger Name: {{passengerName}}</p>
+    <p>Seat Number: {{seatNumber}}</p>
+    <p>Fare: {{fare}}</p>
+  </body>
+</html>
+
+
+

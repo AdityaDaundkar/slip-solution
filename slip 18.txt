@@ -1,0 +1,80 @@
+Slip 18 - A) Create Node.js application to bind custom event ‘receive_data’ with ‘data_receive_handler function’.
+
+
+
+const EventEmitter = require('events');
+
+class CustomEventEmitter extends EventEmitter {}
+
+const customEmitter = new CustomEventEmitter();
+
+customEmitter.on('receive_data', data_receive_handler);
+
+function data_receive_handler(data) {
+  console.log('Data received:', data);
+}
+
+// Emit the custom event
+customEmitter.emit('receive_data', 'Hello, world!');
+
+
+
+
+
+
+Slip 18 - B) Using Node.js create Application that contains Voters details and check proper validation for (name, age, and nationality), as Name should be in uppercase letters only, Age should not be less than 18 yrs and Nationality should be Indian and store the data in database.
+
+
+
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const mysql = require('mysql2');
+
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Connect to the MySQL database
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
+  database: 'voters'
+});
+
+// Define API endpoint to receive voter details
+app.post('/voters', (req, res) => {
+  const { name, age, nationality } = req.body;
+
+  // Validate voter details
+  if (!name.match(/^[A-Z]+$/)) {
+    res.status(400).json({ error: 'Name should be in uppercase letters only' });
+    return;
+  }
+  if (age < 18) {
+    res.status(400).json({ error: 'Age should not be less than 18 years' });
+    return;
+  }
+  if (nationality !== 'Indian') {
+    res.status(400).json({ error: 'Nationality should be Indian' });
+    return;
+  }
+
+  // Insert voter details into the database
+  connection.query(
+    'INSERT INTO voters (name, age, nationality) VALUES (?, ?, ?)',
+    [name, age, nationality],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+        return;
+      }
+      res.json({ message: 'Voter details added successfully' });
+    }
+  );
+});
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});

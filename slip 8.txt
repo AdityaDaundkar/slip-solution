@@ -1,0 +1,170 @@
+Slip 8 - A) Using Node.js create a web page to read two file names from user and combine in third file with all content in Upper case.
+Solution:
+ Code for app.js
+
+var express = require("express");
+
+var multer = require('multer'); 
+
+var app = express(); 
+
+var storage = multer.diskStorage({ 
+
+destination: function (req, file, callback) { 
+
+callback(null, './uploads'); 
+
+}, 
+
+filename: function (req, file, callback) { 
+
+callback(null, file.originalname); 
+
+} 
+
+}); 
+
+var upload = multer({ storage : storage}).single('myfile'); 
+
+app.get('/',function(req,res){ 
+
+res.sendFile(__dirname + "/index1.html"); 
+
+}); 
+
+app.post('/upload',function(req,res){ 
+
+upload(req,res,function(err) { 
+
+if(err) { 
+
+return res.end("Error uploading file."); 
+
+} 
+
+res.end("File is uploaded successfully!"); 
+
+}); 
+
+}); 
+
+app.listen(2000,function(){ 
+
+console.log("Server is running on port 2000"); 
+
+}); 
+
+
+Code for index.html
+
+<html>
+
+<head>
+
+<title>File upload in Node.js </title>
+
+<script
+
+src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+<script
+
+src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"><
+
+/script>
+
+<script>
+
+$(document).ready(function() { 
+
+$('#uploadForm').submit(function() { 
+
+$("#status").empty().text("File is uploading...");
+
+$(this).ajaxSubmit({
+
+error: function(xhr) { 
+
+status('Error: ' + xhr.status); 
+
+}, 
+
+success: function(response) { 
+
+console.log(response) 
+
+$("#status").empty().text(response); 
+
+} 
+
+}); 
+
+return false; 
+
+}); 
+
+}); 
+
+</script>
+
+</head>
+
+<body>
+
+<h1>Express.js File Upload</h1>
+
+<form id="uploadForm" enctype="multipart/form-data" action="/upload"
+
+method="post">
+
+<input type="file" name="myfile" /><br/><br/>
+
+<input type="submit" value="Upload Image" name="submit"><br/><br/>
+
+<span id="status"></span>
+
+</form>
+
+</body>
+
+</html>
+
+
+
+
+
+Slip 8 - B) Create an Node.js Application that contain the Student Registration details and validate Student first and last name should not contains any special symbols / digits and also age should be between 6 to 25.
+
+const express = require('express');
+const bodyParser = require('body-parser');
+
+const app = express();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.post('/register', (req, res) => {
+  const { firstName, lastName, age } = req.body;
+
+  // Validate first and last name for special symbols/digits
+  const nameRegex = /^[a-zA-Z ]+$/;
+  if (!nameRegex.test(firstName) || !nameRegex.test(lastName)) {
+    return res.status(400).send('First and Last name should not contain special symbols or digits');
+  }
+
+  // Validate age between 6 to 25
+  if (age < 6 || age > 25) {
+    return res.status(400).send('Age should be between 6 and 25');
+  }
+
+  // Save student registration details to database or do something else with it
+  // ...
+
+  // Send success response
+  res.send('Student registration successful');
+});
+
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
+

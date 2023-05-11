@@ -1,0 +1,100 @@
+Slip 30 - A) Create a Node.js Application that uses user defined module circle.js which exports the functions area() and circumference() and display the details on console.
+ Solution:
+circle.js
+
+var circle={  
+
+  area: function(r)
+
+{
+
+    var pi=3.14,a;  
+
+     a=pi*r*r;
+
+  
+
+  console.log('area of circle is:'+a);
+
+},
+
+circumference: function(r)
+
+{
+
+    var pi=3.14,c;
+
+  c=2*pi*r;
+
+  console.log('circumference of circle is:'+c);
+
+}
+
+};
+
+ module.exports=circle
+
+ 
+
+mycircle.js
+
+var mymod=require('C:/Users/Public/node_prog/circle.js');
+
+mymod.area(5);
+
+mymod.circumference(5);
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+Slip 30 - B) Create a Node,js file that demonstrate create database and Hospital table (hReg, hName,address, contact) in MySQL.
+Solution:
+/* Hospital.js*/
+
+
+var mysql=require('mysql');
+
+var cn=mysql.createConnection({
+
+host:"localhost",
+
+user:"root",
+
+password:"",
+
+database:"mydb"
+
+});
+
+cn.connect(function(err){
+
+      if(err) throw err;
+
+      console.log("connected!");
+
+      var sql="CREATE TABLE Hospital(hReg INT
+
+       AUTO_INCREMENT PRIMARY KEY ,hName
+
+        VARCHAR(20),hAddress VARCHAR(20),contact  INT)";
+
+
+    cn.query(sql,function(err,result){
+
+       if(err)throw err;
+
+            console.log("Table Created!");
+
+   });
+
+});

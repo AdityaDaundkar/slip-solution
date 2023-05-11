@@ -1,0 +1,231 @@
+Slip 12 - A) Create Node.js Application that binds two listeners to single events.
+
+const EventEmitter = require('events');
+
+// Create a new EventEmitter
+const myEmitter = new EventEmitter();
+
+// Bind the first listener to the event
+myEmitter.on('myEvent', () => {
+  console.log('Listener 1 called');
+});
+
+// Bind the second listener to the same event
+myEmitter.on('myEvent', () => {
+  console.log('Listener 2 called');
+});
+
+// Emit the event
+myEmitter.emit('myEvent');
+
+
+
+
+
+Slip 12 - B) Using Node,js create a User Login System.
+Solution:
+ const mysql = require("mysql");
+
+const express = require("express");
+
+const bodyParser = require("body-parser");
+
+const encoder = bodyParser.urlencoded();
+
+const app = express();
+
+const con = mysql.createConnection({
+
+    host: "localhost",
+
+    user: "root",
+
+    password: "",
+
+    database: "nodejs"
+
+});
+
+con.connect(function(error){
+
+    if (error) throw error
+
+    else console.log("connected")
+
+});
+
+app.get("/",function(req,res){
+
+    res.sendFile(__dirname + "/index.html");
+
+})
+
+app.post("/",encoder, function(req,res){
+
+    var username = req.body.username;
+
+    var password = req.body.password;
+
+    con.query("select * from loginuser where user_name = ? and user_pass = ?",[username,password],function(error,results,fields){
+
+        if (results.length > 0) {
+
+            res.redirect("/loggedine");
+
+        } else {
+
+            res.redirect("/");
+
+        }
+
+        res.end();
+
+    })
+
+})
+
+app.get("/loggedine",function(req,res){
+
+    res.sendFile(__dirname + "/loggedine.html")
+
+})
+
+app.listen(8080);
+
+index.html
+
+<!DOCTYPE html>   
+
+<html>   
+
+<head>  
+
+<meta name="viewport" content="width=device-width, initial-scale=1">  
+
+<title> Login Page </title>  
+
+<style>   
+
+Body {  
+
+  font-family: Calibri, Helvetica, sans-serif;  
+
+}  
+
+button {   
+
+       background-color: #4CAF50;   
+
+       width: 100%;  
+
+        padding: 15px;   
+
+        margin: 10px 0px;   
+
+        border: none;   
+
+        cursor: pointer;   
+
+         }   
+
+ input[type=text], input[type=password] {   
+
+        width: 100%;   
+
+        margin: 8px 0;  
+
+        padding: 12px 20px;   
+
+        display: inline-block;   
+
+        border: 2px solid green;   
+
+        box-sizing: border-box;   
+
+    }  
+
+ button:hover {   
+
+        opacity: 0.7;   
+
+    }   
+
+  .cancelbtn {   
+
+        width: auto;   
+
+        padding: 10px 18px;  
+
+        margin: 10px 5px;  
+
+    }   
+
+ .container {   
+
+    padding: 31px 568px;
+
+    }   
+
+</style>   
+
+</head>    
+
+<body>    
+
+    <center> <h1> BJS ASC College </h1> </center>   
+
+    <center> <h1> Login Form </h1> </center>   
+
+        <h2>User Login</h2>
+
+        <form action="/" method="POST">
+
+            <input type="text" name="username" class="input-field" placeholder="Username" />
+
+            <input type="password" name="password" class="input-field" placeholder="Password" />
+
+            <button type="submit"  value="LOGIN">login
+
+    </form>     
+
+</body>     
+
+</html> 
+
+loggedine.html
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title> hello</title>
+
+    <style>
+
+        Body {
+
+            font-family: Calibri, Helvetica, sans-serif;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <center>
+
+        <h1> BJS ASC College  </h1>
+
+        <h1> Thank you for log in</h1>
+
+    </center>
+
+</body>
+
+</html>

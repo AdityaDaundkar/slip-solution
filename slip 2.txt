@@ -1,0 +1,90 @@
+Slip 2 - A) Create a Node.js Application that uses user defined Module to return the factorial of given number.
+ Solution:
+fact.js
+
+var fact={  
+
+  factorial: function(n)
+
+{
+
+    var f=1,i;
+
+  for(i=1;i<=n;i++)
+
+   {     f=f*i;
+
+   }
+
+  console.log('factorial of '+n+' is:'+f);}};
+
+ module.exports=fact
+
+
+
+app.js
+
+var mymod=require('C:/Users/Public/node_prog/fact.js');
+
+mymod.factorial(5);
+
+
+
+Slip 2 - B) Create a Nodejs Application that contain the Employee Registration details and write a JavaScript to validate DOB, Joining Date, and Salary.
+
+// Import modules and packages
+const express = require('express');
+const bodyParser = require('body-parser');
+
+// Create an instance of express
+const app = express();
+
+// Use body-parser middleware to parse request bodies
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// Define routes for employee registration
+app.post('/register', (req, res) => {
+  // Get the employee details from the request body
+  const { name, dob, joiningDate, salary } = req.body;
+
+  // Validate the employee details
+  const errors = [];
+  if (!isValidDate(dob)) {
+    errors.push('Invalid date of birth');
+  }
+  if (!isValidDate(joiningDate)) {
+    errors.push('Invalid joining date');
+  }
+  if (!isValidSalary(salary)) {
+    errors.push('Invalid salary');
+  }
+
+  // If there are errors, send a response with the errors
+  if (errors.length > 0) {
+    res.status(400).json({ errors });
+    return;
+  }
+
+  // If there are no errors, save the employee details to a database or file
+  // and send a success response
+  res.json({ message: 'Employee registered successfully' });
+});
+
+// Start the server and listen for incoming requests
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});
+
+// Helper functions for validation
+function isValidDate(date) {
+  const regex = /^\d{4}-\d{2}-\d{2}$/;
+  return regex.test(date);
+}
+
+function isValidSalary(salary) {
+  const regex = /^\d+(\.\d{1,2})?$/;
+  return regex.test(salary);
+}
+

@@ -1,0 +1,80 @@
+Slip 16 - A) Create a Node.js file named main.js for event-driven application. There should be a main loop that listens for events, and then triggers a callback function when one of those events is detected.
+
+
+// Import the events module
+const events = require('events');
+
+// Create an event emitter object
+const eventEmitter = new events.EventEmitter();
+
+// Create a callback function to handle the event
+const handleEvent = () => {
+  console.log('Event detected!');
+};
+
+// Register the callback function to the event emitter object
+eventEmitter.on('myEvent', handleEvent);
+
+// Define a main loop that listens for events
+const mainLoop = () => {
+  console.log('Main loop started.');
+
+  // Emit the event after a delay of 3 seconds
+  setTimeout(() => {
+    eventEmitter.emit('myEvent');
+  }, 3000);
+
+  console.log('Main loop ended.');
+};
+
+// Call the main loop function
+mainLoop();
+
+
+
+
+
+Slip 16 - B) Create a Node,js file that Select all records from the "Employee" table, and Update the salary of the given Eno.
+Solution:
+
+
+var mysql = require('mysql');
+
+
+var con = mysql.createConnection({
+
+  host: "localhost",
+
+  user: "root",
+
+  password: "",
+
+  database: "employee_DB"
+
+});
+
+
+con.connect(function(err) {
+
+  if (err) throw err;
+
+  var sql = "UPDATE Employee SET Sal = 50000 WHERE Eno = 1";
+
+  con.query(sql, function (err, result,display) {
+
+    if (err) throw err;
+
+    console.log(result.affectedRows + " record updated");
+
+  });
+
+
+  con.query("SELECT * FROM employee", function (err, result, fields) {
+
+    if (err) throw err;
+
+    console.log(result);
+
+  });
+
+});

@@ -1,0 +1,75 @@
+Slip 13 - A) Create Node.js application using user defined Rectangle module to find area of rectangle and display the details on console.
+Solution:
+rect.js          
+var rect={ 
+
+  area: function(l,b)
+
+{
+
+    var a; 
+
+     a=l*b;
+
+ 
+
+  console.log('area of rectangle is:'+a);
+
+}
+
+};
+
+ module.exports=rect
+
+ 
+
+myrect.js
+var mymod=require('C:/Users/Public/node_prog/rect.js');
+
+mymod.area(5,4);
+
+
+
+
+
+
+
+Slip 13 - B) Create a Node.js Application that Update Marks of given student Rno in “student" table and display the result.
+Solution:
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+
+host: "localhost",
+
+user: "root",
+
+password: "",
+
+database: "student"
+
+});
+
+con.connect(function(err) {
+
+if (err) throw err;
+
+var sql = "UPDATE student SET Marks = 90 WHERE Roll__num = 1";
+
+con.query(sql, function (err, result,display) {
+
+if (err) throw err;
+
+console.log(result.affectedRows + " record updated");
+
+});
+
+con.query("SELECT *, name FROM student", function (err, result, fields) {
+
+if (err) throw err;
+
+console.log(result);
+
+});
+
+});

@@ -1,0 +1,54 @@
+Slip 21 - A) Write Node.js application to create an Event Emitter which will emit an event that contains information about the application's uptime, every second.
+
+
+const EventEmitter = require('events');
+
+class Uptime extends EventEmitter {
+  constructor() {
+    super();
+    this.start();
+  }
+
+  start() {
+    setInterval(() => {
+      const uptime = process.uptime();
+      this.emit('uptime', uptime);
+    }, 1000);
+  }
+}
+
+const uptimeEmitter = new Uptime();
+
+uptimeEmitter.on('uptime', (uptime) => {
+  console.log(`Application uptime: ${uptime}s`);
+});
+
+
+Slip 21 - B) Using Node.js create an application that shows the mini statement of particular account. (customer table)
+
+const mysql = require('mysql');
+
+const connection = mysql.createConnection({
+  host: 'localhost',
+  user: 'your_username',
+  password: 'your_password',
+  database: 'your_database_name'
+});
+
+connection.connect((err) => {
+  if (err) throw err;
+  console.log('Connected to database!');
+});
+
+const accountNumber = 123456789; // replace with the desired account number
+
+const sql = `SELECT * FROM customer WHERE account_number = ${accountNumber} ORDER BY transaction_date DESC LIMIT 10`;
+
+connection.query(sql, (err, results) => {
+  if (err) throw err;
+  console.log(results);
+  
+  connection.end();
+});
+
+
